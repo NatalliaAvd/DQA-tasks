@@ -1,47 +1,12 @@
 class Processor():
 
-    def __init__(self, stroka):
-        self.stroka=stroka
-        self.stroka1=stroka.split()  # разбиваем строку по словам
-
-    # определяем заголовок книги
-    def book_title(self):
-        book_name=''
-        title1 = self.stroka.find('<book-title')
-        if title1 != -1:
-            title2 = self.stroka.find('</book-title>')
-            book_name = self.stroka[title1 + len('<book-title>'):title2]
-        return book_name, self.stroka.count('<p>')
-
-    #вычищаем теги из текста
-    def transform_to_text(self):
-        # если в файле есть картинки, то удаляем их
-
-        pict = self.stroka.count('<binary')
-        if pict > 0:
-            while pict > 0:
-                fteg = self.stroka.find('<binary')
-                cl_teg = self.stroka.find('</binary>')
-                self.stroka = self.stroka[0:fteg] + self.stroka[cl_teg:len(self.stroka)]
-                pict -= 1
-
-        # вычищаем текст от тегов
-        ans = []
-        # state==0 - закрывающийся тег, state==1 - открывающийся тег
-        state = 0
-        for c in self.stroka:
-            if c == '<':
-                state = 1
-            if c == '>':
-                state = 0
-            elif state == 0:
-                ans.append(c)
-        self.stroka = ''.join(ans)
-        return self.stroka
+    def __init__(self, clear_text):
+        self.clear_text = clear_text
+        self.clear_text1=clear_text.split()  # разбиваем строку по словам
 
     def count_letters(self):
         # количество букв в тексте
-        text = self.transform_to_text()
+        text = self.clear_text
         punctuation = 0
         for i in text:
             if i.isalpha() is True:
@@ -50,7 +15,7 @@ class Processor():
 
     def big_letter(self):
         # Количество слов, начинающихся с большой буквы
-        text1 = self.transform_to_text().split()
+        text1 = self.clear_text.split()
         bigword = 0
         letter = 0
         for i in text1:
@@ -62,8 +27,8 @@ class Processor():
 
     def additional_statistics(self):
         # считаем статистику для второй таблицы
-        print('start')
-        text1 = self.transform_to_text().split()
+        #print('start')
+        text1 = self.clear_text.split()
         table2 = []
         for i in text1:
             if i[-1].isalpha():
@@ -71,7 +36,7 @@ class Processor():
             else:
                 s = i[-2::]
                 table2.append((s, text1.count(s), text1.count(s.capitalize())))
-        print('finish')
+        #print('finish')
         return table2
 
 

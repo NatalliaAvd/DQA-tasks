@@ -1,14 +1,22 @@
 import logging
 
-logging.basicConfig(format = u'%(levelname)-8s [%(asctime)s] %(message)s', level = logging.DEBUG, filename = u'mylog.log')
+def log_settings(message):
+    logger = logging.getLogger("read_files")
+    logger.setLevel(logging.INFO)
 
-# Сообщение отладочное
-logging.debug( u'This is a debug message' )
-# Сообщение информационное
-logging.info( u'This is an info message' )
-# Сообщение предупреждение
-logging.warning( u'This is a warning' )
-# Сообщение ошибки
-logging.error( u'This is an error message' )
-# Сообщение критическое
-logging.critical( u'FATAL!!!' )
+    # create the logging file handler
+    fh = logging.FileHandler("mylog.log")
+
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+
+    # add handler to logger object
+    logger.addHandler(fh)
+
+    logger.info(message)
+
+
+
+
+
+
